@@ -8,6 +8,7 @@ import se.lexicon.model.Person;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -25,7 +26,7 @@ public class Exercises {
 
 
     public static void main(String[] args) {
-        exercise8("ex 1 is running");
+        exercise13("ex 1 is running");
 
     }
 
@@ -161,8 +162,10 @@ public class Exercises {
     public static void exercise10(String message){
         System.out.println(message);
 
-        //Write your code here
-        // TODO: exercise10
+       storage.findAndDo(
+               person ->person.getFirstName().equalsIgnoreCase
+                       (new StringBuilder(person.getFirstName()).reverse().toString()),
+               person -> System.out.println(person.getFirstName()+ "--"+ person.getLastName()));
 
         System.out.println("----------------------");
     }
@@ -172,18 +175,10 @@ public class Exercises {
      */
     public static void exercise11(String message){
         System.out.println(message);
-        List<Person> personList=new ArrayList<>();
-        personList.add(new Person("Erik","Stevenson", LocalDate.of(2022,11,10),MALE));
-        long namesBeginningWithA = personList
-                .stream()
-                .filter(name -> name.getFirstName().startsWith("A"))
-                .count();
-
-        System.out.println("Number of names beginning with A is: " + namesBeginningWithA);
-
-
-        //Write your code here
-        // TODO: exercise11
+        storage.findAndSort(
+                person -> person.getFirstName().startsWith("A"),
+                Comparator.comparing(Person::getBirthDate)
+        ).forEach(System.out::println);
 
         System.out.println("----------------------");
     }
@@ -193,16 +188,27 @@ public class Exercises {
      */
     public static void exercise12(String message) {
         System.out.println(message);
-        //Write your code here
-        // TODO: exercise12
+        storage.findAndSort(
+                person -> person.getBirthDate().getYear() < 1950,
+                Comparator.comparing(Person::getBirthDate).reversed()
+        ).forEach(System.out::println);
+
+        System.out.println("----------------------");
     }
+
     /*
         13.	Using findAndSort() find everyone sorted in following order: lastName > firstName > birthDate.
      */
     public static void exercise13(String message){
         System.out.println(message);
-        //Write your code here
-        // TODO: exercise13
+
+       Comparator<Person> compareFirstName= (Person o1, Person o2)->o1.getFirstName().compareTo(o2.getFirstName());
+
+
+        storage.findAndSort(
+                Comparator.comparing(Person::getLastName).thenComparing(Person::getFirstName).thenComparing(Person::getBirthDate)
+        ).forEach(System.out::println);
+       //
 
         System.out.println("----------------------");
     }
