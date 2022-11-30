@@ -9,8 +9,5 @@
         <module name="lambda_practice" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="lambda_practice" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
